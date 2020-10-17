@@ -1,5 +1,6 @@
 {
   "name": "macmotp/codegen",
+  "version": "v0.1.0",
   "description": "Generate human friendly codes with patterns",
   "keywords": [
     "macmotp",

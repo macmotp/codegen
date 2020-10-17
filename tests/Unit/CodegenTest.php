@@ -2,13 +2,20 @@
 
 namespace Macmotp\Codegen\Tests\Unit;
 
+use Macmotp\Codegen;
 use PHPUnit\Framework\TestCase;
 
 class CodegenTest extends TestCase
 {
-    /** @test */
-    public function true_is_true()
+    private Codegen $generator;
+
+    protected function setUp(): void
     {
-        $this->assertTrue(true);
+        $this->generator = new Codegen();
+    }
+
+    public function testCodegenMakesSemanticCodes()
+    {
+        $this->assertIsString($this->generator->make('string')->forHumans());
     }
 }

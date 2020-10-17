@@ -28,4 +28,14 @@ class Codegen
 
         return $this;
     }
+
+    /**
+     * Get the first element from the collection
+     *
+     * @return string
+     */
+    public function forHumans(): string
+    {
+        return $this->source;
+    }
 }
