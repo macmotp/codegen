@@ -1,10 +1,10 @@
 <?php
 
-namespace Codegen\Tests;
+namespace Macmotp\Codegen\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-class ExampleTest extends TestCase
+class CodegenTest extends TestCase
 {
     /** @test */
     public function true_is_true()

@@ -1,10 +1,12 @@
 {
   "name": "macmotp/codegen",
-  "description": "Generate semantic codes with patterns",
+  "description": "Generate human friendly codes with patterns",
   "keywords": [
     "macmotp",
     "codegen",
     "code",
+    "code generator",
+    "human friendly code",
     "reference code",
     "semantic code",
     "receipt numbers"
@@ -28,12 +30,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Codegen\\": "src/Codegen"
+      "Macmotp\\": "src/Codegen"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Codegen\\Tests\\": "tests"
+      "Macmotp\\Codegen\\Tests\\": "tests"
     }
   },
   "scripts": {
