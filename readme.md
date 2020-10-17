@@ -1,7 +1,7 @@
 # Code Generator
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/macmotp/codegen.svg?style=flat-square)](https://packagist.org/packages/macmotp/codegen)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/macmotp/codegen/run-tests?label=tests)](https://github.com/macmotp/codegen/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/macmotp/codegen/run-tests?label=tests)](https://github.com/macmotp/codegen/actions?query=workflow%3ATests+branch%3Amain)
 [![codecov](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)](undefined)
 [![Total Downloads](https://img.shields.io/packagist/dt/macmotp/codegen.svg?style=flat-square)](https://packagist.org/packages/macmotp/codegen)
 
