@@ -1,11 +1,12 @@
 # Code Generator
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/macmotp/codegen.svg?style=flat-square)](https://packagist.org/packages/macmotp/codegen)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/macmotp/codegen/run-tests?label=tests)](https://github.com/macmotp/codegen/actions?query=workflow%3ATests+branch%3Amain)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/macmotp/codegen.svg)](https://packagist.org/packages/macmotp/codegen)
+[![Total Downloads](https://img.shields.io/packagist/dt/macmotp/codegen.svg)](https://packagist.org/packages/macmotp/codegen)
 [![codecov](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)](undefined)
-[![Total Downloads](https://img.shields.io/packagist/dt/macmotp/codegen.svg?style=flat-square)](https://packagist.org/packages/macmotp/codegen)
 
 **Generate human friendly codes**
+
+Useful for generation of referral codes based on names, receipt numbers, unique references.
 
 ## Installation
 
@@ -15,7 +16,7 @@ You can install the package via composer:
 composer require macmotp/codegen
 ```
 
-##  Usage
+## Usage
    
 #### Create semantic and sanitized reference codes from any string
 ``` php
@@ -23,57 +24,62 @@ use Macmotp\Codegen;
 
 $generator = new Codegen();
 
-echo $generator->make('John Doe')->forHumans();
+echo $generator->generate('Bob McLovin');
 
-// (string) 'JHND'
+// (string) 'BBMCLV'
 
-$set = $generator->make('John Doe')->toArray();
+echo $generator->generate('Company Name');
 
-dump($set);
+// (string) 'CMPYNM'
+```
+
+#### Create collections of codes
+``` php
+use Macmotp\Codegen;
+
+$generator = new Codegen();
+
+echo $generator->collection('Bob McLovin', 4);
 
 // (array) [
-//    'JHND',
-//    'JHDE',
-//    'JHNE',
-//    'JNDE',
-//    'JHNN',
-//    'JNDD',
-//    'JHNA',
-//    'JHNK',
-//    'JHN3',
-//    'JHNT',
-// ]
+//    'BBMCLV',
+//    'BBMCLN',
+//    'BBMCVN',
+//    'BBMLVN',
+// ];
 ```
-_Once the possibilities are running low due to lack of letters from the source, it will apply random letters for unique solutions._
 
-#### Set up a configuration if you need to prepend/append patterns or incrementing numbers
+## Configuration
+#### Set your configuration parameters
 ``` php
 use Macmotp\Codegen;
 use Macmotp\Codegen\Config;
 
 $config = new Config();
-$config->codeLength = 8;
-$config->prepend = 'NR';
-$config->numberLength = 6;
-$config->startingNumber = 14;
-$config->incremental = true;
-$config->sanitize = false;
-$config->count = 5;
 
-$generator = new Codegen($config);
+$config->setCodeLength(8);
+$config->prepend('ST');
 
-$receiptNumbers = $generator->make()->toArray();
+$generator = new Codegen();
 
-dump($receiptNumbers);
+echo $generator->withConfig($config)->generate('Company Name');
+// (string) 'STCMPYNM'
 
-// (array) [
-//    'NR000014',
-//    'NR000015',
-//    'NR000016',
-//    'NR000017',
-//    'NR000018',
-// ]
+// Will generate different results if called sequentially
+echo $generator->generate('Company Name');
+echo $generator->generate('Company Name');
+echo $generator->generate('Company Name');
+// (string) 'STCMPNNM'
+// (string) 'STCMPPYN'
+// (string) 'STCMPANM'
 ```
+_Once the possibilities are running low due to lack of letters from the source, it automatically applies random letters._
+_Please note that this package does not guarantee uniqueness on its results._
+
+#### List of methods for configuration
+- `setCodeLength(int $length)`: length of the output string code;
+- `prepend(string $prepend)`: prepend a string;
+- `append(string $append)`: append a string;
 
 ## Testing
 
