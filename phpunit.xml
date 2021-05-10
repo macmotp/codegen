@@ -25,7 +25,4 @@
             <clover outputFile="build/logs/clover.xml"/>
         </report>
     </coverage>
-    <logging>
-        <junit type="coverage-clover" target="clover.xml"/>
-    </logging>
 </phpunit>
