@@ -57,6 +57,4 @@ class CodegenTest extends TestCase
             ['Sirio the ecommerce for the future', 'SECOFU'],
         ];
     }
-
-
 }

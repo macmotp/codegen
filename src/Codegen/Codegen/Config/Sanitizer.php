@@ -167,7 +167,7 @@ class Sanitizer
     {
         $this->words = explode(' ', $this->source);
         $this->words = array_values(array_filter($this->words, function ($word) {
-            return ! in_array($word, self::FILTERED_WORDS);
+            return ! in_array($word, self::FILTERED_WORDS, true);
         }));
 
         return $this;

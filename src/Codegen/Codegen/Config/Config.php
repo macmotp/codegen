@@ -262,7 +262,7 @@ class Config
      */
     public function setSanitizeLevel(int $sanitizeLevel)
     {
-        if (! in_array($sanitizeLevel, array_keys(self::SANITIZE_REGEX))) {
+        if (! in_array($sanitizeLevel, array_keys(self::SANITIZE_REGEX), true)) {
             throw new InvalidCodegenConfigurationException('Sanitize level not found');
         }
 
