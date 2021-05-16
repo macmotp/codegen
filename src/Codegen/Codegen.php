@@ -4,8 +4,8 @@ namespace Macmotp;
 
 use Macmotp\Codegen\Config\Config;
 use Macmotp\Codegen\Config\Sanitizer;
-use Macmotp\Codegen\Scanner\Chunk;
-use Macmotp\Codegen\Scanner\Scanner;
+use Macmotp\Codegen\Exceptions\InvalidCodegenConfigurationException;
+use Macmotp\Codegen\Generator\Generator;
 
 /**
  * Class Codegen
@@ -15,12 +15,18 @@ use Macmotp\Codegen\Scanner\Scanner;
 class Codegen
 {
     /**
+     * The generator
+     *
+     * @var Generator
+     */
+    private Generator $generator;
+
+    /**
      * The config object
      *
      * @var Config
      */
     private Config $config;
-
 
     /**
      * The sanitizer
@@ -28,13 +34,6 @@ class Codegen
      * @var Sanitizer
      */
     private Sanitizer $sanitizer;
-
-    /**
-     * The scanner
-     *
-     * @var Scanner
-     */
-    private Scanner $scanner;
 
     /**
      * Collection of codes
@@ -48,42 +47,107 @@ class Codegen
      */
     public function __construct()
     {
-        $this->scanner = new Scanner();
+        $this->generator = new Generator();
         $this->config = new Config();
         $this->sanitizer = new Sanitizer();
         $this->collection = [];
     }
 
     /**
-     * Override the default config
+     * Set the code length
      *
-     * @param Config $config
+     * @param int $codeLength
      *
-     * @return $this
+     * @return self
+     * @throws InvalidCodegenConfigurationException
      */
-    public function withConfig(Config $config): self
+    public function setCodeLength(int $codeLength): self
     {
-        $this->config = $config;
+        $this->config->setCodeLength($codeLength);
 
         return $this;
     }
 
-    public function collection(string $source, int $number): array
+    /**
+     * Set the max number of attempts
+     *
+     * @param int $maxAttempts
+     *
+     * @return self
+     * @throws InvalidCodegenConfigurationException
+     */
+    public function setMaxAttempts(int $maxAttempts): self
     {
-        // Sanitize, scanning and analyzing the source
-        $words = $this->sanitizer->setSanitizeRegex($this->config->getSanitizeRegex())->sanitize($source);
-        $codeLength = $this->config->getActualCodeLength();
+        $this->config->setMaxAttempts($maxAttempts);
 
-        for ($i = 0; $i < $number; $i++) {
-            $this->processWords($words, $i);
-            $code = $this->generateCode();
-            $length = strlen($code);
-            // Append random characters if code is less than expected
-            // It might happen if there are a lot of short words
-            $code = $this->appendRandomCharacters($code, $codeLength - $length);
+        return $this;
+    }
 
-            // Prepend and append from config
-            $this->collection[] = "{$this->config->getPrependString()}{$code}{$this->config->getAppendString()}";
+    /**
+     * Set the prepend string
+     *
+     * @param string $prependString
+     *
+     * @return $this
+     * @throws InvalidCodegenConfigurationException
+     */
+    public function prepend(string $prependString): self
+    {
+        $this->config->prepend($prependString);
+
+        return $this;
+    }
+
+    /**
+     * Set the append string
+     *
+     * @param string $appendString
+     *
+     * @return $this
+     * @throws InvalidCodegenConfigurationException
+     */
+    public function append(string $appendString): self
+    {
+        $this->config->append($appendString);
+
+        return $this;
+    }
+
+    /**
+     * Set the sanitize level
+     *
+     * @param int $sanitizeLevel
+     *
+     * @return $this
+     * @throws InvalidCodegenConfigurationException
+     */
+    public function setSanitizeLevel(int $sanitizeLevel): self
+    {
+        $this->config->setSanitizeLevel($sanitizeLevel);
+
+        return $this;
+    }
+
+    /**
+     * Generate a collection of codes
+     *
+     * @param string|null $source
+     * @param int $count
+     *
+     * @return array
+     */
+    public function collection(?string $source, int $count = 1): array
+    {
+        // Reset the collection
+        $this->collection = [];
+        $source ??= '';
+
+        // Sanitize the source
+        $source = $this->sanitizer->setSanitizeRegex($this->config->getSanitizeRegex())->sanitize($source);
+
+        // Generate the codes
+        for ($i = 0; $i < $this->checkAttempts($count); $i++) {
+            $this->collection[] = $this->generator->withConfig($this->config)->generate($source);
         }
 
         return $this->collection;
@@ -92,55 +156,27 @@ class Codegen
     /**
      * Generate a single code
      *
-     * @param string $source
+     * @param string|null $source
      *
      * @return string
      */
-    public function generate(string $source): string
+    public function generate(?string $source): string
     {
-        $this->collection($source, 1);
+        $this->collection($source);
 
         return $this->collection[0];
     }
 
     /**
-     * Process the words
+     * Check count attempts
+     * Must be at least one and less than maximum attempt
      *
-     * @param array $words
-     * @param int $iteration
+     * @param int $count
      *
-     * @return void
+     * @return int
      */
-    private function processWords(array $words, int $iteration): void
+    private function checkAttempts(int $count): int
     {
-        $this->scanner->setIteration($iteration)->setCodeLength($this->config->getActualCodeLength())->scan($words);
-    }
-
-    /**
-     * Generate the actual code
-     *
-     * @return string
-     */
-    private function generateCode(): string
-    {
-        // Get the chunks from scanner
-        return implode('', array_map(fn (Chunk $chunk) => $chunk->getChunk(), $this->scanner->getChunks()));
-    }
-
-    /**
-     * Append random characters
-     *
-     * @param string $generated
-     * @param int $differenceInLength
-     *
-     * @return string
-     */
-    private function appendRandomCharacters(string $generated, int $differenceInLength): string
-    {
-        if ($differenceInLength <= 0) {
-            return $generated;
-        }
-
-        return $generated . substr(str_shuffle($this->config->getValidCharacters()), 0, $differenceInLength);
+        return min(max(1, $count), $this->config->getMaxAttempts());
     }
 }

@@ -6,6 +6,12 @@ use Macmotp\Codegen\Config\Config;
 use Macmotp\Codegen\Exceptions\InvalidCodegenConfigurationException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class ConfigTest
+ *
+ * @package Macmotp\Codegen\Tests\Unit\Config
+ * @group Config
+ */
 class ConfigTest extends TestCase
 {
     private Config $config;

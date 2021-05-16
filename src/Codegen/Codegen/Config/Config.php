@@ -18,10 +18,12 @@ class Config
 
     /**
      * Sanitize levels
+     *
+     * 1. Low/Default: will filter out anything is not a letter or a digit
+     * 2. Medium: will filter out (O - 0 - Q - I - 1) characters
+     * 3. High: will filter out (2 - Z - 4 - A - 5 - S - 8 - B - U - V - Y) characters
+     *
      * Levels are inclusive, e.g. the highest level will apply also regex of level low and medium
-     * 1. Low: will filter anything is not a letter or a digit
-     * 2. Medium/Default: will filter (O - 0 - Q - I - 1 - L) characters
-     * 3. High: will filter also (2 - Z - 4 - A - 5 - S - 8 - B - U - V - Y) characters
      */
     public const SANITIZE_LEVEL_LOW = 1;
     public const SANITIZE_LEVEL_MEDIUM = 2;
@@ -32,8 +34,8 @@ class Config
      */
     public const SANITIZE_REGEX = [
         self::SANITIZE_LEVEL_LOW => '/[^a-zA-Z0-9\s]/',
-        self::SANITIZE_LEVEL_MEDIUM => '/([ILOQ]|[^a-zA-Z2-9\s])/',
-        self::SANITIZE_LEVEL_HIGH => '/([ABILOQSUVY]|[^c-wC-W3-9\s])/',
+        self::SANITIZE_LEVEL_MEDIUM => '/([IOQ]|[^a-zA-Z2-9\s])/',
+        self::SANITIZE_LEVEL_HIGH => '/([ABIOQSUVY458]|[^c-wC-W3-9\s])/',
     ];
 
     /**
@@ -41,8 +43,8 @@ class Config
      */
     public const VALID_CHARACTERS = [
         self::SANITIZE_LEVEL_LOW => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-        self::SANITIZE_LEVEL_MEDIUM => 'ABCDEFGHJKMNPRSTUVWXYZ23456789',
-        self::SANITIZE_LEVEL_HIGH => 'CDEFGHJKMNPRTWX3679',
+        self::SANITIZE_LEVEL_MEDIUM => 'ABCDEFGHJKLMNPRSTUVWXYZ23456789',
+        self::SANITIZE_LEVEL_HIGH => 'CDEFGHJKLMNPRTWX3679',
     ];
 
     /**
@@ -226,7 +228,7 @@ class Config
      * @return $this
      * @throws InvalidCodegenConfigurationException
      */
-    public function prepend(string $prependString)
+    public function prepend(string $prependString): self
     {
         $this->prependString = $prependString;
 
@@ -243,7 +245,7 @@ class Config
      * @return $this
      * @throws InvalidCodegenConfigurationException
      */
-    public function append(string $appendString)
+    public function append(string $appendString): self
     {
         $this->appendString = $appendString;
 
@@ -260,7 +262,7 @@ class Config
      * @return $this
      * @throws InvalidCodegenConfigurationException
      */
-    public function setSanitizeLevel(int $sanitizeLevel)
+    public function setSanitizeLevel(int $sanitizeLevel): self
     {
         if (! in_array($sanitizeLevel, array_keys(self::SANITIZE_REGEX), true)) {
             throw new InvalidCodegenConfigurationException('Sanitize level not found');

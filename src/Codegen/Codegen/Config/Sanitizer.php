@@ -47,6 +47,13 @@ class Sanitizer
     protected string $source;
 
     /**
+     * The source after sanitization
+     *
+     * @var string
+     */
+    protected string $sanitizedSource;
+
+    /**
      * The sanitize regex
      *
      * @var string
@@ -65,9 +72,9 @@ class Sanitizer
      *
      * @param string $source
      *
-     * @return array
+     * @return string
      */
-    public function sanitize(string $source): array
+    public function sanitize(string $source): string
     {
         $this->source = $source;
 
@@ -79,7 +86,19 @@ class Sanitizer
             ->trim()
             ->filter();
 
-        return $this->words;
+        $this->sanitizedSource = implode(' ', $this->words);
+
+        return $this->getSanitizedSource();
+    }
+
+    /**
+     * Get the sanitized source
+     *
+     * @return string
+     */
+    public function getSanitizedSource(): string
+    {
+        return $this->sanitizedSource;
     }
 
     /**

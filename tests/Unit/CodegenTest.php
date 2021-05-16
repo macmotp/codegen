@@ -6,55 +6,70 @@ use Macmotp\Codegen;
 use Macmotp\Codegen\Config\Config;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class CodegenTest
+ *
+ * @package Macmotp\Codegen\Tests\Unit
+ * @group Codegen
+ */
 class CodegenTest extends TestCase
 {
-    private Codegen $generator;
+    private Codegen $codegen;
 
     protected function setUp(): void
     {
-        $this->generator = new Codegen();
-    }
-
-    /**
-     * @dataProvider listDifferentSources
-     *
-     * @param string $source
-     * @param string $code
-     */
-    public function testCodegenGeneration(string $source, string $code)
-    {
-        $result = $this->generator->generate($source);
-
-        $this->assertEquals($code, $result);
-        $this->assertIsString($result);
-        $this->assertTrue(strlen($result) === 6);
+        $this->codegen = new Codegen();
     }
 
     public function testCodegenUsesConfiguration()
     {
-        $config = new Config();
-        $config->setCodeLength(8);
-        $config->prepend('PR');
-        $config->append('AP');
-
-        $code = $this->generator->withConfig($config)->generate('Company Name');
+        $code = $this->codegen
+            ->setCodeLength(8)
+            ->prepend('PR')
+            ->append('AP')
+            ->generate('Company Name');
 
         $this->assertEquals(8, strlen($code));
         $this->assertEquals('PR', substr($code, 0, 2));
         $this->assertEquals('AP', substr($code, -2));
     }
 
+    public function testCodegenMaxAttempts()
+    {
+        $codes = $this->codegen
+            ->setMaxAttempts(3)
+            ->collection('Company Name', 4);
+
+        $this->assertCount(3, $codes);
+    }
+
     /**
-     * List of different sources
+     * @dataProvider listDifferentSanitizeLevels
+     *
+     * @param int $sanitizeLevel
+     * @param string $source
+     * @param string $regex
+     */
+    public function testCodegenSetsSanitizeLevel(int $sanitizeLevel, string $source, string $regex)
+    {
+        $code = $this->codegen
+            ->setSanitizeLevel($sanitizeLevel)
+            ->generate($source);
+
+        $this->assertMatchesRegularExpression($regex, $code);
+    }
+
+    /**
+     * List of different sanitize levels
      *
      * @return array[]
      */
-    public function listDifferentSources(): array
+    public function listDifferentSanitizeLevels(): array
     {
         return [
-            ['John Doe', 'JOHNDO'],
-            ['Company Name', 'COMPNA'],
-            ['Sirio the ecommerce for the future', 'SECOFU'],
+            'low' => [Config::SANITIZE_LEVEL_LOW, 'Bob Maclovin', '/[a-zA-Z0-9\s]/'],
+            'medium' => [Config::SANITIZE_LEVEL_MEDIUM, 'Bob Maclovin', '/([IOQ]|[a-zA-Z2-9\s])/'],
+            'high' => [Config::SANITIZE_LEVEL_HIGH, 'Bob Maclovin', '/([ABIOQSUVY458]|[c-wC-W3-9\s])/'],
         ];
     }
 }

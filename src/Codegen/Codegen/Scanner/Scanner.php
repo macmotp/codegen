@@ -42,6 +42,7 @@ class Scanner
         $this->iteration = 0;
         $this->maxIteration = 1;
         $this->numberOfChunks = 0;
+        $this->chunks = [];
     }
 
     /**
@@ -129,13 +130,14 @@ class Scanner
 
         /** @var Chunk $chunk */
         foreach ($sortedChunks as $index => $chunk) {
-            $chunk->setWeight($weightDistribution[$index]);
+            $chunk->setWeight(min($chunk->getLength(), $weightDistribution[$index]));
             // Save only the ones with weight
             if ($chunk->getWeight() >= 1) {
                 $this->maxIteration *= $chunk->getMaxNumberOfIterations();
                 $distributedChunks[] = $chunk;
             }
         }
+
 
         // Scan how many chunks are left
         $this->numberOfChunks = count($distributedChunks);

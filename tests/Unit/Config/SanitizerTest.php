@@ -7,6 +7,12 @@ use Macmotp\Codegen\Config\Sanitizer;
 use Macmotp\Codegen\Exceptions\InvalidCodegenConfigurationException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class SanitizerTest
+ *
+ * @package Macmotp\Codegen\Tests\Unit\Config
+ * @group Config
+ */
 class SanitizerTest extends TestCase
 {
     private Sanitizer $sanitizer;
@@ -23,11 +29,11 @@ class SanitizerTest extends TestCase
      *
      * @param string $source
      * @param int $sanitizeLevel
-     * @param array $result
+     * @param string $result
      *
      * @throws InvalidCodegenConfigurationException
      */
-    public function testSanitizerFiltersUnwantedLetters(string $source, int $sanitizeLevel, array $result)
+    public function testSanitizerFiltersUnwantedLetters(string $source, int $sanitizeLevel, string $result)
     {
         $sanitizeRegex = $this->config->setSanitizeLevel($sanitizeLevel)->getSanitizeRegex();
 
@@ -43,20 +49,20 @@ class SanitizerTest extends TestCase
     {
         return [
             // Try different sanitize level on latin character
-            ['Sirio the ecommerce for the future', Config::SANITIZE_LEVEL_LOW, ['SIRIO', 'ECOMMERCE', 'FUTURE']],
-            ['Sirio the ecommerce for the future', Config::SANITIZE_LEVEL_MEDIUM, ['SR', 'ECMMERCE', 'FUTURE']],
-            ['Sirio the ecommerce for the future', Config::SANITIZE_LEVEL_HIGH, ['R', 'ECMMERCE', 'FTRE']],
+            ['Sirio the ecommerce for the future', Config::SANITIZE_LEVEL_LOW, 'SIRIO ECOMMERCE FUTURE'],
+            ['Sirio the ecommerce for the future', Config::SANITIZE_LEVEL_MEDIUM, 'SR ECMMERCE FUTURE'],
+            ['Sirio the ecommerce for the future', Config::SANITIZE_LEVEL_HIGH, 'R ECMMERCE FTRE'],
             // Try trim spaces
-            ['  JOHN  ', Config::SANITIZE_LEVEL_MEDIUM, ['JHN']],
-            ['  JOHN  DOE ', Config::SANITIZE_LEVEL_MEDIUM, ['JHN', 'DE']],
+            ['  JOHN  ', Config::SANITIZE_LEVEL_MEDIUM, 'JHN'],
+            ['  JOHN  DOE ', Config::SANITIZE_LEVEL_MEDIUM, 'JHN DE'],
             // Try different sanitize level on non latin character
-            ['Company Name: a lot/ of ! non $ accepted. Char_act&rs', Config::SANITIZE_LEVEL_LOW, ['COMPANY', 'NAME', 'A', 'LOT', 'NON', 'ACCEPTED', 'CHARACTRS']],
-            ['Jöhn Doë', Config::SANITIZE_LEVEL_LOW, ['JOHN', 'DOE']],
-            ['Jöhn Doë', Config::SANITIZE_LEVEL_MEDIUM, ['JHN', 'DE']],
-            ['ありがとうございました', Config::SANITIZE_LEVEL_MEDIUM, ['ARGATUGZAMASHTA']],
-            ['ありがとうございました', Config::SANITIZE_LEVEL_HIGH, ['RGTGMHT']],
-            ['cảm ơn bạn', Config::SANITIZE_LEVEL_MEDIUM, ['CAM', 'N', 'BAN']],
-            ['Привет русский народ', Config::SANITIZE_LEVEL_HIGH, ['PRET', 'RKJ', 'NRD']],
+            ['Company Name: a lot/ of ! non $ accepted. Char_act&rs', Config::SANITIZE_LEVEL_LOW, 'COMPANY NAME A LOT NON ACCEPTED CHARACTRS'],
+            ['Jöhn Doë', Config::SANITIZE_LEVEL_LOW, 'JOHN DOE'],
+            ['Jöhn Doë', Config::SANITIZE_LEVEL_MEDIUM, 'JHN DE'],
+            ['ありがとうございました', Config::SANITIZE_LEVEL_MEDIUM, 'ARGATUGZAMASHTA'],
+            ['ありがとうございました', Config::SANITIZE_LEVEL_HIGH, 'RGTGMHT'],
+            ['cảm ơn bạn', Config::SANITIZE_LEVEL_MEDIUM, 'CAM N BAN'],
+            ['Привет русский народ', Config::SANITIZE_LEVEL_HIGH, 'PRET RKJ NRD'],
         ];
     }
 }
