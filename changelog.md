@@ -10,3 +10,7 @@ All notable changes to `macmotp/codegen` will be documented in this file
 
 - easier config
 - fix reset source
+
+## v0.1.2 - 2021-05-17
+
+- fix max number of attempts

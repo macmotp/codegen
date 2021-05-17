@@ -34,13 +34,23 @@ class CodegenTest extends TestCase
         $this->assertEquals('AP', substr($code, -2));
     }
 
-    public function testCodegenMaxAttempts()
+    public function testCodegenMaxAttemptsWithSingleCode()
     {
-        $codes = $this->codegen
+        $this->codegen->setMaxAttempts(3);
+        for ($i = 0; $i < 4; $i++) {
+            $this->codegen->generate('Company Name');
+        }
+
+        $this->assertCount(3, $this->codegen->getCollection());
+    }
+
+    public function testCodegenMaxAttemptsWithCollection()
+    {
+        $this->codegen
             ->setMaxAttempts(3)
             ->collection('Company Name', 4);
 
-        $this->assertCount(3, $codes);
+        $this->assertCount(3, $this->codegen->getCollection());
     }
 
     /**
