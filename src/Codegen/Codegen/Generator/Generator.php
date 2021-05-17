@@ -118,7 +118,7 @@ class Generator
     private function generateCode(): string
     {
         // Get the chunks from scanner
-        return implode('', array_map(fn(Chunk $chunk) => $chunk->getChunk(), $this->scanner->getChunks()));
+        return implode('', array_map(fn (Chunk $chunk) => $chunk->getChunk(), $this->scanner->getChunks()));
     }
 
     /**
