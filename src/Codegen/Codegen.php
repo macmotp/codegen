@@ -50,7 +50,37 @@ class Codegen
         $this->generator = new Generator();
         $this->config = new Config();
         $this->sanitizer = new Sanitizer();
-        $this->collection = [];
+        $this->resetCollection();
+    }
+
+    /**
+     * Get the collection
+     *
+     * @return array
+     */
+    public function getCollection(): array
+    {
+       return $this->collection;
+    }
+
+    /**
+     * Get the number of generated codes
+     *
+     * @return int
+     */
+    public function getNumberOfGeneratedCodes(): int
+    {
+        return count($this->collection);
+    }
+
+    /**
+     * Get the last generated code
+     *
+     * @return string
+     */
+    public function getLastGeneratedCode(): string
+    {
+        return !empty($this->getCollection()) ? $this->getCollection()[$this->getNumberOfGeneratedCodes() - 1] : '';
     }
 
     /**
@@ -138,8 +168,6 @@ class Codegen
      */
     public function collection(?string $source, int $count = 1): array
     {
-        // Reset the collection
-        $this->collection = [];
         $source ??= '';
 
         // Sanitize the source
@@ -150,7 +178,7 @@ class Codegen
             $this->collection[] = $this->generator->withConfig($this->config)->generate($source);
         }
 
-        return $this->collection;
+        return $this->getCollection();
     }
 
     /**
@@ -162,9 +190,23 @@ class Codegen
      */
     public function generate(?string $source): string
     {
-        $this->collection($source);
+        $count = $this->getNumberOfGeneratedCodes();
 
-        return $this->collection[0];
+        if ($this->checkAttempts($count) < $this->config->getMaxAttempts()) {
+            $this->collection($source);
+        }
+
+        return $this->getLastGeneratedCode();
+    }
+
+    /**
+     * Reset the collection
+     *
+     * @return void
+     */
+    private function resetCollection(): void
+    {
+        $this->collection = [];
     }
 
     /**
