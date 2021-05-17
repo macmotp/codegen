@@ -2,6 +2,11 @@
 
 All notable changes to `macmotp/codegen` will be documented in this file
 
-## 0.1.0 - 2020-10-16
+## v0.1.0 - 2021-05-10
 
 - initial release
+
+## v0.1.1 - 2021-05-15
+
+- easier config
+- fix reset source

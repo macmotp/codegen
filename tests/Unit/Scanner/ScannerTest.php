@@ -87,6 +87,15 @@ class ScannerTest extends TestCase
                     'max_iteration' => 5,
                 ],
             ], 1, 5],
+            'words 1, code length 3, iteration 0' => [['A'], 3, 0, [
+                [
+                    'chunk' => 'A',
+                    'weight' => 1,
+                    'position' => 0,
+                    'loop' => 0,
+                    'max_iteration' => 1,
+                ],
+            ], 1, 1],
             'words 2, code length 4, iteration 0' => [['ABC', 'DE'], 4, 0, [
                 [
                     'chunk' => 'ABC',
