@@ -60,7 +60,7 @@ class Codegen
      */
     public function getCollection(): array
     {
-       return $this->collection;
+        return $this->collection;
     }
 
     /**
