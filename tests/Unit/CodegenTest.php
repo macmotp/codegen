@@ -41,7 +41,7 @@ class CodegenTest extends TestCase
             $this->codegen->generate('Company Name');
         }
 
-        $this->assertCount(3, $this->codegen->getCollection());
+        $this->assertCount(4, $this->codegen->getCollection());
     }
 
     public function testCodegenMaxAttemptsWithCollection()

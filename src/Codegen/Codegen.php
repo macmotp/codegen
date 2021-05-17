@@ -64,26 +64,6 @@ class Codegen
     }
 
     /**
-     * Get the number of generated codes
-     *
-     * @return int
-     */
-    public function getNumberOfGeneratedCodes(): int
-    {
-        return count($this->collection);
-    }
-
-    /**
-     * Get the last generated code
-     *
-     * @return string
-     */
-    public function getLastGeneratedCode(): string
-    {
-        return !empty($this->getCollection()) ? $this->getCollection()[$this->getNumberOfGeneratedCodes() - 1] : '';
-    }
-
-    /**
      * Set the code length
      *
      * @param int $codeLength
@@ -192,9 +172,7 @@ class Codegen
     {
         $count = $this->getNumberOfGeneratedCodes();
 
-        if ($this->checkAttempts($count) < $this->config->getMaxAttempts()) {
-            $this->collection($source);
-        }
+        $this->collection($this->checkAttempts($count) < $this->config->getMaxAttempts() ? $source : null);
 
         return $this->getLastGeneratedCode();
     }
@@ -207,6 +185,26 @@ class Codegen
     private function resetCollection(): void
     {
         $this->collection = [];
+    }
+
+    /**
+     * Get the last generated code
+     *
+     * @return string
+     */
+    private function getLastGeneratedCode(): string
+    {
+        return !empty($this->getCollection()) ? $this->getCollection()[$this->getNumberOfGeneratedCodes() - 1] : '';
+    }
+
+    /**
+     * Get the number of generated codes
+     *
+     * @return int
+     */
+    private function getNumberOfGeneratedCodes(): int
+    {
+        return count($this->collection);
     }
 
     /**
