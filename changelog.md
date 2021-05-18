@@ -18,3 +18,7 @@ All notable changes to `macmotp/codegen` will be documented in this file
 ## v0.1.3 - 2021-05-17
 
 - keep generating random characters if over max attempts
+
+## v0.1.4 - 2021-05-18
+
+- keep generating random characters if over max iterations
