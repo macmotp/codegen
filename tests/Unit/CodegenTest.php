@@ -53,6 +53,13 @@ class CodegenTest extends TestCase
         $this->assertCount(3, $this->codegen->getCollection());
     }
 
+    public function testCodegenUsesRandomCharactersAfterMaxIteration()
+    {
+        $this->codegen->setCodeLength(4)->collection('Marco', 100);
+
+        $this->assertCount(100, $this->codegen->getCollection());
+    }
+
     /**
      * @dataProvider listDifferentSanitizeLevels
      *

@@ -127,6 +127,7 @@ class Scanner
         // Sort chunks by length, to compare with the initial weight distribution
         $sortedChunks = $this->sortByLength($chunks);
         $distributedChunks = [];
+        $this->maxIteration = 1;
 
         /** @var Chunk $chunk */
         foreach ($sortedChunks as $index => $chunk) {

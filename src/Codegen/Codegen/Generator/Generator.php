@@ -50,6 +50,13 @@ class Generator
     private int $actualCodeLength;
 
     /**
+     * The number of times max attempts is reached
+     *
+     * @var int
+     */
+    private int $maxAttemptsReached;
+
+    /**
      * Collection of codes
      *
      * @var array
@@ -66,6 +73,7 @@ class Generator
         $this->sanitizer = new Sanitizer();
         $this->iteration = 0;
         $this->actualCodeLength = 0;
+        $this->maxAttemptsReached = 0;
         $this->collection = [];
     }
 
@@ -95,6 +103,12 @@ class Generator
         // Scanning and analyzing the source
         $words = explode(' ', $source);
         $this->actualCodeLength = $this->config->getActualCodeLength();
+
+        if ($this->iteration >= $this->scanner->getMaxIteration()) {
+            $source = substr($source, 0, -(++$this->maxAttemptsReached));
+
+            $words = explode(' ', $source);
+        }
 
         // Scan the words
         $this->scanner->setCodeLength($this->actualCodeLength)->setIteration($this->iteration++)->scan($words);
