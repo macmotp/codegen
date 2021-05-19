@@ -8,6 +8,9 @@
 
 Useful for referral codes, receipt codes, code references.
 
+## Requirements
+- PHP 8.0
+
 ## Installation
 
 Install the package via composer:
@@ -15,6 +18,8 @@ Install the package via composer:
 ```bash
 composer require macmotp/codegen
 ```
+
+_if you use PHP 7.4, please make sure to use v0.1.4_
 
 ## Usage
    
