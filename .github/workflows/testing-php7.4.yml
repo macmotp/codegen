@@ -1,4 +1,4 @@
-name: Tests
+name: Tests on PHP 7.4
 
 on: [push, pull_request]
 
