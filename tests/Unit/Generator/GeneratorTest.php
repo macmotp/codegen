@@ -47,7 +47,7 @@ class GeneratorTest extends TestCase
      *
      * @return array[]
      */
-    public function listDifferentSources(): array
+    public static function listDifferentSources(): array
     {
         return [
             ['JOHN DOE', 'JOHNDO'],

@@ -71,7 +71,7 @@ class MappingTest extends TestCase
      *
      * @return array[]
      */
-    public function listOfIndexesArrays(): array
+    public static function listOfIndexesArrays(): array
     {
         return [
             'weight 1, iteration 0, chunk length 1' => [1, 0, 1, [1]],
@@ -90,7 +90,7 @@ class MappingTest extends TestCase
      *
      * @return array[]
      */
-    public function listOfMaxIterations(): array
+    public static function listOfMaxIterations(): array
     {
         return [
             'weight 1, chunk length 1' => [1, 1, 1],

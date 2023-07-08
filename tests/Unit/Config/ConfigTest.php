@@ -103,7 +103,7 @@ class ConfigTest extends TestCase
      *
      * @return array[]
      */
-    public function listInvalidCodeLengthExceptionCases(): array
+    public static function listInvalidCodeLengthExceptionCases(): array
     {
         return [
             [2, '', ''],

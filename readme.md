@@ -2,14 +2,18 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/macmotp/codegen.svg)](https://packagist.org/packages/macmotp/codegen)
 [![Total Downloads](https://img.shields.io/packagist/dt/macmotp/codegen.svg)](https://packagist.org/packages/macmotp/codegen)
-[![codecov](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)](undefined)
+[![codecov](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)
 
 **Generate human friendly codes**
 
 Useful for referral codes, receipt codes, code references.
 
 ## Requirements
-- PHP 8.0
+- PHP >= 8.1
+
+_for PHP 7.4, use branch v0.1.4_
+
+_for PHP 8.0, use branch v0.1.5_
 
 ## Installation
 
@@ -18,8 +22,6 @@ Install the package via composer:
 ```bash
 composer require macmotp/codegen
 ```
-
-_if you use PHP 7.4, please make sure to use v0.1.4_
 
 ## Usage
    

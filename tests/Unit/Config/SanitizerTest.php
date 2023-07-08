@@ -45,7 +45,7 @@ class SanitizerTest extends TestCase
      *
      * @return array[]
      */
-    public function listSanitizeCases(): array
+    public static function listSanitizeCases(): array
     {
         return [
             // Try different sanitize level on latin character
