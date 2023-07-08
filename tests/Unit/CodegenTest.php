@@ -81,7 +81,7 @@ class CodegenTest extends TestCase
      *
      * @return array[]
      */
-    public function listDifferentSanitizeLevels(): array
+    public static function listDifferentSanitizeLevels(): array
     {
         return [
             'low' => [Config::SANITIZE_LEVEL_LOW, 'Bob Maclovin', '/[a-zA-Z0-9\s]/'],

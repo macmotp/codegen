@@ -38,7 +38,7 @@ class ChunkTest extends TestCase
      *
      * @return array[]
      */
-    public function listOfCharactersToSwap(): array
+    public static function listOfCharactersToSwap(): array
     {
         return [
             'character 0, weight 1, iteration 0' => ['', 1, 0, '', 1, 0],

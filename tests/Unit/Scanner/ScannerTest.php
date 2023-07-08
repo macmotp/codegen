@@ -57,7 +57,7 @@ class ScannerTest extends TestCase
      *
      * @return array[]
      */
-    public function listOfWordsToScan(): array
+    public static function listOfWordsToScan(): array
     {
         return [
             'words 1, code length 1, iteration 0' => [['A'], 1, 0, [
@@ -290,7 +290,7 @@ class ScannerTest extends TestCase
      *
      * @return array[]
      */
-    public function listOfWeightsToCalculate(): array
+    public static function listOfWeightsToCalculate(): array
     {
         return [
             'number of chunks 1, code length 1' => [1, 1, [1]],
