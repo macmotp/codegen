@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/macmotp/codegen.svg)](https://packagist.org/packages/macmotp/codegen)
 [![Total Downloads](https://img.shields.io/packagist/dt/macmotp/codegen.svg)](https://packagist.org/packages/macmotp/codegen)
-[![codecov](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)](undefined)
+[![codecov](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)](https://codecov.io/gh/macmotp/codegen/branch/main/graph/badge.svg?token=K55RQULWLJ)
 
 **Generate human friendly codes**
 
